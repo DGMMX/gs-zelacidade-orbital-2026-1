@@ -1,0 +1,11 @@
+.env
+.local/
+artifacts/
+evidencias/
+**/bin/
+**/obj/
+**/TestResults/
+*.trx
+__pycache__/
+*.pem
+*.key

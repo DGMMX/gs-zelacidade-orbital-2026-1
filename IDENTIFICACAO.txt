@@ -1,0 +1,9 @@
+GLOBAL SOLUTION 2026/1 - DEVOPS TOOLS & CLOUD COMPUTING
+Grupo: ZelaCidade
+Solucao: ZelaCidade Orbital
+Aluno: Diego Bassalo Canals Silva
+RM: 558710
+Turma: 2TDSPG
+Entrega individual
+Professor: Antonio Sergio Rodrigues Figueiredo
+Contato: profantonio.figueiredo@fiap.com.br / pf1776@fiap.com.br
