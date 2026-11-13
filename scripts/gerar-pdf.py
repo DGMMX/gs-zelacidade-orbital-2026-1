@@ -49,6 +49,16 @@ def main():
         actual = {(op.get('tabela'), op.get('operacao')) for op in proof.get('operacoes', []) if op.get('sql') and op.get('saidaSelect')}
         if not proof.get('aprovado') or not expected.issubset(actual):
             raise SystemExit('Falta evidencia real de CRUD e SELECT nas duas tabelas. Execute validar-nuvem.py na VM e copie o JSON para evidencias/.')
+        environment_path = ROOT/'evidencias/ambiente.json'
+        inspection_path = ROOT/'evidencias/inspecao-nuvem.json'
+        environment = json.loads(environment_path.read_text(encoding='utf-8-sig')) if environment_path.exists() else {}
+        inspection = json.loads(inspection_path.read_text(encoding='utf-8-sig')) if inspection_path.exists() else {}
+        containers = inspection.get('containers', [])
+        if (environment.get('vmCriada') is not True or environment.get('crudNuvemAprovado') is not True
+            or inspection.get('vm', {}).get('subscriptionId') != 'dda05624-99e8-4c3e-adad-af54a46e1811'
+            or len(containers) != 2 or any(c.get('health') != 'healthy' for c in containers)
+            or proof.get('baseUrl') != 'http://' + environment.get('dns', '') + ':8080'):
+            raise SystemExit('Falta comprovacao de execucao na VM Azure. Teste local nao substitui a nuvem.')
     doc = pymupdf.open()
     page = doc.new_page(width=595, height=842)
     page.draw_rect(pymupdf.Rect(0, 0, 595, 205), fill=(0.05, 0.13, 0.24), color=None)

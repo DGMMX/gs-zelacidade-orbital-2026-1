@@ -1,4 +1,4 @@
-param([string]$Location = 'eastus', [string]$VmSize = 'Standard_B2s')
+param([string]$Location = 'southafricanorth', [string]$VmSize = 'Standard_B2als_v2')
 $ErrorActionPreference = 'Stop'
 $ProjectRoot = Split-Path $PSScriptRoot -Parent
 $Azure = 'az'
@@ -10,9 +10,11 @@ function Invoke-AzureJson([string[]]$Arguments) {
 }
 $account = Invoke-AzureJson @('account','show')
 if ($account.user.name -ne 'RM558710@fiap.com.br' -or $account.id -ne 'dda05624-99e8-4c3e-adad-af54a46e1811') { throw 'Entre com RM558710@fiap.com.br na assinatura Azure for Students autorizada.' }
+$SubscriptionDetails = Invoke-AzureJson @('rest','--method','get','--url',"https://management.azure.com/subscriptions/$($account.id)?api-version=2022-12-01")
+if ($SubscriptionDetails.subscriptionPolicies.spendingLimit -ne 'On') { throw 'O limite de gastos precisa estar ligado. Este script nao altera cobranca nem remove o limite.' }
 $ResourceGroup = 'rg-zelacidade-orbital-rm558710'
 $VmName = 'vm-orbital-rm558710'
-$NsgName = 'nsg-orbital-rm558710'
+$NsgName = "nsg-orbital-rm558710-$Location"
 $DnsLabel = 'zelacidade-orbital-rm558710-dda0'
 $LocalDir = Join-Path $ProjectRoot '.local'
 $KeyPath = Join-Path $LocalDir 'orbital_vm'
@@ -25,7 +27,10 @@ if (-not (Test-Path -LiteralPath $KeyPath)) {
 $ClientIp = (Invoke-RestMethod -Uri 'https://api.ipify.org').Trim()
 if ($ClientIp -notmatch '^\d{1,3}(\.\d{1,3}){3}$') { throw 'IP publico IPv4 nao identificado.' }
 Invoke-AzureJson @('provider','register','--namespace','Microsoft.Compute','--wait') | Out-Null
-Invoke-AzureJson @('group','create','--name',$ResourceGroup,'--location',$Location,'--tags','projeto=ZelaCidadeOrbital','rm=558710','semestre=2026-1') | Out-Null
+$GroupExists = Invoke-AzureJson @('group','exists','--name',$ResourceGroup)
+if (-not $GroupExists) {
+    Invoke-AzureJson @('group','create','--name',$ResourceGroup,'--location',$Location,'--tags','projeto=ZelaCidadeOrbital','rm=558710','semestre=2026-1') | Out-Null
+}
 Invoke-AzureJson @('network','nsg','create','--resource-group',$ResourceGroup,'--name',$NsgName,'--location',$Location) | Out-Null
 Invoke-AzureJson @('network','nsg','rule','create','-g',$ResourceGroup,'--nsg-name',$NsgName,'-n','SSH-Aluno','--priority','1000','--source-address-prefixes',"$ClientIp/32",'--destination-port-ranges','22','--protocol','Tcp','--access','Allow') | Out-Null
 Invoke-AzureJson @('network','nsg','rule','create','-g',$ResourceGroup,'--nsg-name',$NsgName,'-n','API-Publica','--priority','1010','--source-address-prefixes','Internet','--destination-port-ranges','8080','--protocol','Tcp','--access','Allow') | Out-Null

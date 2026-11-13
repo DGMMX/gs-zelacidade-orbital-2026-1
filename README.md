@@ -23,17 +23,19 @@ Legenda: seta azul = HTTP externo; verde = SQL na rede Docker; laranja = arquivo
 ## Links
 
 - [GitHub deste semestre](https://github.com/DGMMX/gs-zelacidade-orbital-2026-1)
-- [Swagger da VM](http://zelacidade-orbital-rm558710-dda0.eastus.cloudapp.azure.com:8080/swagger)
-- [Prontidão da API/banco](http://zelacidade-orbital-rm558710-dda0.eastus.cloudapp.azure.com:8080/health/ready)
+- [Swagger da VM](http://zelacidade-orbital-rm558710-dda0.southafricanorth.cloudapp.azure.com:8080/swagger)
+- [Prontidão da API/banco](http://zelacidade-orbital-rm558710-dda0.southafricanorth.cloudapp.azure.com:8080/health/ready)
 - Vídeo YouTube: **ainda não gravado**. Inserir o link real depois da publicação/revisão.
 
 O link da VM depende de recursos ativos. Consulte `evidencias/ambiente.json` do pacote para o estado e a data da validação; existência de um endereço no README não certifica disponibilidade.
+
+Validação de preparação em 12/11/2026: os dois containers executaram em uma VM B2als_v2 na Azure South Africa North. CRUD das duas tabelas, SELECTs diretos no PostgreSQL e persistência após recriar containers foram aprovados. O vídeo do aluno continua pendente e deve repetir a demonstração. As evidências datadas acompanham o pacote local, sem segredos.
 
 ## How to: do clone aos testes na nuvem
 
 ### 1. Preparar uma VM Ubuntu 24.04 LTS
 
-Na máquina Windows com Azure CLI, entre na assinatura Azure for Students de `RM558710@fiap.com.br`. O script abaixo cria recursos separados dos usados no 2º semestre. Exige quota Compute disponível; usa VM Standard_B2s, disco Standard SSD e IP público, que consomem crédito enquanto alocados. Não ativa Test Plans nem trial.
+Na máquina Windows com Azure CLI, entre na assinatura Azure for Students de `RM558710@fiap.com.br`. O script abaixo cria recursos separados dos usados no 2º semestre. Exige quota Compute disponível; usa VM Standard_B2als_v2 em South Africa North, disco Standard SSD e IP público, que consomem crédito enquanto alocados. Não ativa Test Plans nem trial.
 
 ```powershell
 az login
@@ -47,7 +49,7 @@ O script guarda chave privada em `.local/` e registra apenas dados não secretos
 ### 2. Conectar por SSH e conferir Docker
 
 ```powershell
-ssh -i .local/orbital_vm orbitaladmin@zelacidade-orbital-rm558710-dda0.eastus.cloudapp.azure.com
+ssh -i .local/orbital_vm orbitaladmin@zelacidade-orbital-rm558710-dda0.southafricanorth.cloudapp.azure.com
 ```
 
 Na VM:
@@ -122,7 +124,7 @@ docker container exec zelacidade-orbital-db-rm558710 psql -X -U orbital -d orbit
 Para também executar a verificação automatizada HTTP + SELECT, com dados próprios e teste de persistência após recriação dos dois containers:
 
 ```bash
-python3 scripts/validar-nuvem.py --base-url http://zelacidade-orbital-rm558710-dda0.eastus.cloudapp.azure.com:8080 --testar-volume
+python3 scripts/validar-nuvem.py --base-url http://zelacidade-orbital-rm558710-dda0.southafricanorth.cloudapp.azure.com:8080 --testar-volume
 ```
 
 O script registra oito operações com SELECT, casos de erro e persistência em `evidencias/crud-container.json`, e remove só os registros sintéticos que criou. O resultado da preparação não substitui o vídeo: mostre e explique as operações durante sua gravação. Recriar containers preserva o volume; **não execute `docker compose down -v`**.
@@ -132,7 +134,7 @@ O script registra oito operações com SELECT, casos de erro e persistência em 
 No computador Windows, com a chave privada local:
 
 ```powershell
-ssh -i .local/orbital_vm -L 15432:127.0.0.1:5432 orbitaladmin@zelacidade-orbital-rm558710-dda0.eastus.cloudapp.azure.com
+ssh -i .local/orbital_vm -L 15432:127.0.0.1:5432 orbitaladmin@zelacidade-orbital-rm558710-dda0.southafricanorth.cloudapp.azure.com
 ```
 
 Com o túnel aberto, cliente PostgreSQL conecta em `127.0.0.1:15432`, usuário `orbital`, banco `orbital`, usando a senha do `.env` da VM. Esse endereço é a ponta local do túnel; API e banco executam efetivamente na nuvem.
