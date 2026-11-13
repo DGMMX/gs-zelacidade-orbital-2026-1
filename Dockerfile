@@ -6,6 +6,7 @@ COPY src/ src/
 RUN dotnet publish src/Orbital.Api/Orbital.Api.csproj -c Release -o /out --no-restore /p:UseAppHost=false
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0-bookworm-slim AS runtime
+RUN apt-get update && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/*
 RUN groupadd --gid 16558 orbital && useradd --uid 16558 --gid orbital --create-home orbital
 WORKDIR /app
 COPY --from=build --chown=orbital:orbital /out ./

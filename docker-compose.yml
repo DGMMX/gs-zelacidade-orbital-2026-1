@@ -37,6 +37,12 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "http://127.0.0.1:8080/health/ready"]
+      interval: 5s
+      timeout: 15s
+      retries: 20
+      start_period: 10s
 volumes:
   orbital-data:
     name: zelacidade-orbital-data-rm558710
