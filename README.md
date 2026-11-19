@@ -123,8 +123,11 @@ docker container exec zelacidade-orbital-db-rm558710 psql -X -U orbital -d orbit
 
 Para também executar a verificação automatizada HTTP + SELECT, com dados próprios e teste de persistência após recriação dos dois containers:
 
+No terminal Bash conectado à VM por SSH, na pasta do projeto, execute as duas linhas abaixo. Mantenha o endereço completo na primeira linha; o comando não deve ser colado no PowerShell local.
+
 ```bash
-python3 scripts/validar-nuvem.py --base-url http://zelacidade-orbital-rm558710-dda0.southafricanorth.cloudapp.azure.com:8080 --testar-volume
+URL="http://zelacidade-orbital-rm558710-dda0.southafricanorth.cloudapp.azure.com:8080"
+python3 scripts/validar-nuvem.py --base-url "$URL" --testar-volume
 ```
 
 O script registra oito operações com SELECT, casos de erro e persistência em `evidencias/crud-container.json`, e remove só os registros sintéticos que criou. O resultado da preparação não substitui o vídeo: mostre e explique as operações durante sua gravação. Recriar containers preserva o volume; **não execute `docker compose down -v`**.
