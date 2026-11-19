@@ -146,7 +146,3 @@ Referência do professor: PDF 2026/1, páginas **23–28**. App: Dockerfile pró
 O formato oficial solicitado é **PDF com capa, grupo, nomes/RMs, GitHub e YouTube**. O ZIP é um pacote separado de material solicitado pelo aluno. Sem vídeo, o PDF permanece **PRÉVIA — NÃO ENVIAR**. Grave tela com narração clara em pelo menos 720p, sem celular; evidencie todas as etapas desde o clone. A rubrica do 1º semestre orienta cuidado com cortes; prefira uma gravação contínua. O capitulo DevOps não fixa os limites de 3, 5 ou 8 minutos das outras disciplinas.
 
 O enunciado original informa prazo em **09/06/2026 às 23h55** e apresentação de 10 a 16/06. Esses prazos já passaram na data de preparação atual; uma eventual reposição ou novo prazo depende do professor/Portal. Não foi obtida autorização de entrega fora de prazo nem realizado envio ao Portal.
-
-## Uso de IA
-
-ChatGPT/Codex auxiliou na elaboração da adaptação temática, código, infraestrutura, documentação e verificações. Os registros de teste correspondem a execuções reais quando indicados como aprovados; não representam detecção orbital real. Diego deve revisar o material e explicar arquitetura, funcionamento e comandos na apresentação.
