@@ -22,7 +22,7 @@ Legenda: seta azul = HTTP externo; verde = SQL na rede Docker; laranja = arquivo
 
 ## Links
 
-- [GitHub deste semestre](https://github.com/DGMMX/gs-zelacidade-orbital-2026-1)
+- [Repositório do projeto](https://github.com/DGMMX/gs-zelacidade-orbital-2026-1)
 - [Swagger da VM](http://zelacidade-orbital-rm558710-dda0.southafricanorth.cloudapp.azure.com:8080/swagger)
 - [Prontidão da API/banco](http://zelacidade-orbital-rm558710-dda0.southafricanorth.cloudapp.azure.com:8080/health/ready)
 - Vídeo YouTube: **ainda não gravado**. Inserir o link real depois da publicação/revisão.
@@ -35,7 +35,7 @@ Validação de preparação em 12/11/2026: os dois containers executaram em uma 
 
 ### 1. Preparar uma VM Ubuntu 24.04 LTS
 
-Na máquina Windows com Azure CLI, entre na assinatura Azure for Students de `RM558710@fiap.com.br`. O script abaixo cria recursos separados dos usados no 2º semestre. Exige quota Compute disponível; usa VM Standard_B2als_v2 em South Africa North, disco Standard SSD e IP público, que consomem crédito enquanto alocados. Não ativa Test Plans nem trial.
+Na máquina Windows com Azure CLI, entre na assinatura Azure for Students de `RM558710@fiap.com.br`. O script provisiona a infraestrutura do ZelaCidade Orbital: VM Standard_B2als_v2 em South Africa North, disco Standard SSD e IP público. A implantação exige quota Compute disponível, e os recursos consomem crédito enquanto alocados.
 
 ```powershell
 az login
